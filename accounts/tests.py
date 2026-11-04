@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from rest_framework.test import APIClient
+from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import UserProfile
@@ -100,7 +101,8 @@ class AuthenticationAPITests(TestCase):
             format="json",
         )
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(RefreshToken(str(refresh)).check_blacklist())
+        with self.assertRaises(TokenError):
+            RefreshToken(str(refresh)).check_blacklist()
 
     def test_only_admin_can_change_user_role(self):
         customer = self.create_customer()

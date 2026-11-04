@@ -1,22 +1,22 @@
-
 from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from .views import RegisterView, LoginView, MeView
+from .views import (
+    GoogleLoginView,
+    LoginView,
+    LogoutView,
+    MeView,
+    RegisterView,
+    UserRoleUpdateView,
+)
 
 
 urlpatterns = [
-
-    # User Registration
     path("register/", RegisterView.as_view(), name="register"),
-
-    # User Login
     path("login/", LoginView.as_view(), name="login"),
-
-    # Get Logged-in User Profile
+    path("google/", GoogleLoginView.as_view(), name="google-login"),
     path("me/", MeView.as_view(), name="me"),
-
-    # Refresh JWT Access Token
-    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-
+    path("token/refresh/", TokenRefreshView.as_view(), name="token-refresh"),
+    path("logout/", LogoutView.as_view(), name="logout"),
+    path("users/<int:user_id>/role/", UserRoleUpdateView.as_view(), name="user-role-update"),
 ]
